@@ -3,16 +3,16 @@
 ## Phase 1: MCP Server Skeleton and Basic Tools
 
 - [x] Add `github.com/modelcontextprotocol/go-sdk` dependency (`go get github.com/modelcontextprotocol/go-sdk@v1.4.1`)
-- [ ] Create `internal/mcp/` package with `mcp.go` file
-- [ ] Define `tools` struct holding `*store.Store`
-- [ ] Define input types: `SearchTracesInput`, `GetTraceInput`, `GetSpanInput`, `FindErrorTracesInput`, `GetDependenciesInput`
-- [ ] Implement `New(s *store.Store, version string) http.Handler` factory function
-- [ ] Implement `listServices` tool handler
-- [ ] Implement `searchTraces` tool handler (convert input to `store.TraceQuery`)
-- [ ] Implement `getTrace` tool handler (return error text for not-found)
-- [ ] Implement `getSpan` tool handler (return error text for not-found)
-- [ ] Implement `getStatus` tool handler
-- [ ] Implement `getDependencies` tool handler (convert `sinceHours` to `time.Time` via `time.Now().Add(-duration)`)
+- [x] Create `internal/mcp/` package with `mcp.go` file
+- [x] Define `tools` struct holding `*store.Store`
+- [x] Define input types: `SearchTracesInput`, `GetTraceInput`, `GetSpanInput`, `FindErrorTracesInput`, `GetDependenciesInput`
+- [x] Implement `New(s *store.Store, version string) http.Handler` factory function
+- [x] Implement `listServices` tool handler
+- [x] Implement `searchTraces` tool handler (convert input to `store.TraceQuery`)
+- [x] Implement `getTrace` tool handler (return error text for not-found)
+- [x] Implement `getSpan` tool handler (return error text for not-found)
+- [x] Implement `getStatus` tool handler
+- [x] Implement `getDependencies` tool handler (convert `sinceHours` to `time.Time` via `time.Now().Add(-duration)`)
 
 ## Phase 2: Compound Tool and Server Integration
 
