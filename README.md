@@ -189,6 +189,25 @@ make dev
 make clean
 ```
 
+## MCP Server
+
+The daemon exposes an [MCP](https://modelcontextprotocol.io/) server at `/mcp`, so AI tools like Claude Code can query your traces directly.
+
+Add a `.mcp.json` to your project root:
+
+```json
+{
+  "mcpServers": {
+    "pocket-trace": {
+      "type": "http",
+      "url": "http://localhost:7070/mcp"
+    }
+  }
+}
+```
+
+Then Claude Code can search traces, inspect spans, list services, and view dependencies without you copying and pasting from the UI.
+
 ## Dependencies
 
 The `trace` library has zero external dependencies (just stdlib).
