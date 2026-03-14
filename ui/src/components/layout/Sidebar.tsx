@@ -10,7 +10,7 @@ function Logo() {
       <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary text-primary-foreground">
         <span className="text-sm font-bold">pt</span>
       </div>
-      <span className="text-lg font-semibold tracking-tight">pocket-trace</span>
+      <span className="text-lg font-semibold tracking-tight">Pocket Trace</span>
     </div>
   )
 }
