@@ -130,3 +130,28 @@
 - **Critical findings:** 0 resolved, 0 unresolved
 - **Improvements:** 4 addressed, 0 deferred
 - **Proceeding to:** Phase 4
+
+### Task: Store query methods (ListServices, SearchTraces, GetTrace, GetSpan, GetDependencies, Stats, PurgeOlderThan)
+- **Specialist:** go-engineer
+- **Status:** completed
+- **Files:** internal/store/store.go, store_test.go
+- **Summary:** 7 query methods, tree-building with orphan promotion, 22 unit tests
+
+### Task: API handlers, routes, retention purger, integration tests
+- **Specialist:** go-engineer
+- **Status:** completed
+- **Files:** internal/server/handlers.go, routes.go, server.go, handlers_test.go, cmd/pocket-trace/main.go
+- **Summary:** 7 handler methods, all routes wired, retention purger ticker, 16 integration tests
+
+### Phase 4 Review
+- **Reviewer findings:** 2 total (0 critical, 0 improvements needing code changes)
+- **Finding 1 (Noted - spec update):** SpanBuffer constructor has extra channelCap param vs interface.md. Code is correct, spec should be updated.
+- **Finding 2 (Noted - spec clarification):** SearchTraces duration filter applies at span level. Correct behavior, spec wording ambiguous.
+- **No code changes needed.**
+
+### Phase 4 Summary
+- **Tasks:** 22 of 22 completed, 0 skipped
+- **Skipped task count:** 0
+- **Critical findings:** 0 resolved, 0 unresolved
+- **Improvements:** 0 addressed, 0 deferred
+- **Proceeding to:** Phase 5

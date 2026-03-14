@@ -100,16 +100,16 @@ Implement all query endpoints and the store methods that back them.
 
 Implement DaemonManager interface, systemd implementation, and CLI commands.
 
-- [ ] Create `internal/daemon/daemon.go` with `DaemonManager` interface, `ServiceStatus` struct, and `NewDaemonManager()` factory
-- [ ] Create `internal/daemon/systemd.go` with `SystemdManager` struct
-- [ ] Implement `SystemdManager.Install(binaryPath, configPath)` -- write unit file, daemon-reload, enable, start
-- [ ] Implement `SystemdManager.Uninstall()` -- stop, disable, remove unit file, daemon-reload
-- [ ] Implement `SystemdManager.Status()` -- parse systemctl show output
-- [ ] Wire `cmd/pocket-trace/install.go` -- resolve binary path, call DaemonManager.Install
-- [ ] Wire `cmd/pocket-trace/uninstall.go` -- call DaemonManager.Uninstall
-- [ ] Wire `cmd/pocket-trace/status.go` -- call /api/status and DaemonManager.Status, format output
-- [ ] Wire `cmd/pocket-trace/purge.go` -- parse --older-than, send POST /api/purge to running daemon, print result
-- [ ] Write daemon manager tests (mock exec.Command)
+- [x] Create `internal/daemon/daemon.go` with `DaemonManager` interface, `ServiceStatus` struct, and `NewDaemonManager()` factory
+- [x] Create `internal/daemon/systemd.go` with `SystemdManager` struct
+- [x] Implement `SystemdManager.Install(binaryPath, configPath)` -- write unit file, daemon-reload, enable, start
+- [x] Implement `SystemdManager.Uninstall()` -- stop, disable, remove unit file, daemon-reload
+- [x] Implement `SystemdManager.Status()` -- parse systemctl show output
+- [x] Wire `cmd/pocket-trace/install.go` -- resolve binary path, call DaemonManager.Install
+- [x] Wire `cmd/pocket-trace/uninstall.go` -- call DaemonManager.Uninstall
+- [x] Wire `cmd/pocket-trace/status.go` -- call /api/status and DaemonManager.Status, format output
+- [x] Wire `cmd/pocket-trace/purge.go` -- parse --older-than, send POST /api/purge to running daemon, print result
+- [x] Write daemon manager tests (mock exec.Command)
 
 ## Phase 6: UI Application
 
