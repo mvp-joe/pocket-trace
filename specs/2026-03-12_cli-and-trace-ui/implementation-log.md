@@ -155,3 +155,24 @@
 - **Critical findings:** 0 resolved, 0 unresolved
 - **Improvements:** 0 addressed, 0 deferred
 - **Proceeding to:** Phase 5
+
+### Task: DaemonManager, SystemdManager, CLI commands, tests
+- **Specialist:** go-engineer
+- **Status:** completed
+- **Files:** internal/daemon/daemon.go, systemd.go, daemon_test.go, cmd/pocket-trace/install.go, uninstall.go, status.go, purge.go
+- **Summary:** DaemonManager interface with systemd impl, all CLI commands wired, 8 tests
+
+### Phase 5 Review
+- **Reviewer findings:** 5 total (0 critical, 1 improvement, 4 noted)
+- **Finding 1 (Noted):** ServiceStatus.Uptime stores raw timestamp. CLI prints with "Since:" label, making it clear.
+- **Finding 2 (Noted):** No build tags for platform-specific code. Linux-only per spec.
+- **Finding 3 (Noted):** Hardcoded daemon address. Default fine for now.
+- **Finding 4 (Improvement, deferred):** Install test can't verify full flow due to hardcoded unitPath. Template content tested separately.
+- **Finding 5 (Noted):** Path validation in unit file template. Low risk since paths come from os.Executable().
+
+### Phase 5 Summary
+- **Tasks:** 10 of 10 completed, 0 skipped
+- **Skipped task count:** 0
+- **Critical findings:** 0 resolved, 0 unresolved
+- **Improvements:** 0 addressed, 1 deferred
+- **Proceeding to:** Phase 6
