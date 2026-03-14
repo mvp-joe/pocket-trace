@@ -49,14 +49,17 @@ type SpanBuffer struct {
 	batchSize     int
 	flushInterval time.Duration
 	stop          chan struct{}
+	stopOnce      sync.Once
 	wg            sync.WaitGroup
 }
 
 // NewSpanBuffer creates a SpanBuffer and starts its background flush goroutine.
-func NewSpanBuffer(s *store.Store, batchSize int, flushInterval time.Duration) *SpanBuffer {
+// batchSize controls the number of individual spans accumulated before a flush is triggered.
+// channelCap controls how many ingest batches can be buffered before dropping.
+func NewSpanBuffer(s *store.Store, batchSize int, channelCap int, flushInterval time.Duration) *SpanBuffer {
 	b := &SpanBuffer{
 		store:         s,
-		spans:         make(chan []store.Span, batchSize),
+		spans:         make(chan []store.Span, channelCap),
 		batchSize:     batchSize,
 		flushInterval: flushInterval,
 		stop:          make(chan struct{}),
@@ -77,15 +80,18 @@ func (b *SpanBuffer) Add(spans []store.Span) {
 }
 
 // Shutdown signals the background goroutine to drain remaining spans and flush,
-// then blocks until complete.
+// then blocks until complete. Safe to call multiple times.
 func (b *SpanBuffer) Shutdown() {
-	close(b.stop)
+	b.stopOnce.Do(func() { close(b.stop) })
 	b.wg.Wait()
 }
 
 // run is the background goroutine that collects spans and flushes to the store.
 func (b *SpanBuffer) run() {
 	defer b.wg.Done()
+
+	ctx, cancel := context.WithCancel(context.Background())
+	defer cancel()
 
 	ticker := time.NewTicker(b.flushInterval)
 	defer ticker.Stop()
@@ -97,26 +103,28 @@ func (b *SpanBuffer) run() {
 		case spans := <-b.spans:
 			batch = append(batch, spans...)
 			if len(batch) >= b.batchSize {
-				b.flush(batch)
+				b.flush(ctx, batch)
 				batch = make([]store.Span, 0, b.batchSize)
 			}
 
 		case <-ticker.C:
 			if len(batch) > 0 {
-				b.flush(batch)
+				b.flush(ctx, batch)
 				batch = make([]store.Span, 0, b.batchSize)
 			}
 
 		case <-b.stop:
-			// Drain remaining spans from the channel.
+			// Drain remaining spans from the channel with a deadline.
+			drainCtx, drainCancel := context.WithTimeout(ctx, 10*time.Second)
 			for {
 				select {
 				case spans := <-b.spans:
 					batch = append(batch, spans...)
 				default:
 					if len(batch) > 0 {
-						b.flush(batch)
+						b.flush(drainCtx, batch)
 					}
+					drainCancel()
 					return
 				}
 			}
@@ -125,8 +133,8 @@ func (b *SpanBuffer) run() {
 }
 
 // flush writes a batch of spans to the store.
-func (b *SpanBuffer) flush(batch []store.Span) {
-	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+func (b *SpanBuffer) flush(ctx context.Context, batch []store.Span) {
+	ctx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
 
 	if err := b.store.InsertSpans(ctx, batch); err != nil {

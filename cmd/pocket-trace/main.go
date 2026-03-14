@@ -53,7 +53,7 @@ func runDaemon(_ *cobra.Command, _ []string) error {
 		return err
 	}
 
-	buf := server.NewSpanBuffer(s, cfg.BufferSize, cfg.FlushInterval)
+	buf := server.NewSpanBuffer(s, cfg.BufferSize, 64, cfg.FlushInterval)
 
 	h := &server.Handlers{
 		Store:     s,

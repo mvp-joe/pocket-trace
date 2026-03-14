@@ -28,7 +28,7 @@ func setupTestServer(t *testing.T) (*fiber.App, *sql.DB) {
 	}
 
 	// Short flush interval for test responsiveness.
-	buf := NewSpanBuffer(s, 100, 50*time.Millisecond)
+	buf := NewSpanBuffer(s, 100, 64, 50*time.Millisecond)
 
 	h := &Handlers{
 		Store:     s,
@@ -44,11 +44,10 @@ func setupTestServer(t *testing.T) (*fiber.App, *sql.DB) {
 		t.Fatalf("sql.Open: %v", err)
 	}
 
-	t.Cleanup(func() {
-		buf.Shutdown()
-		db.Close()
-		s.Close()
-	})
+	// Cleanup order matters: flush buffer before closing store/db.
+	t.Cleanup(func() { s.Close() })
+	t.Cleanup(func() { db.Close() })
+	t.Cleanup(func() { buf.Shutdown() })
 
 	return srv.App(), db
 }

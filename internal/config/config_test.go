@@ -199,6 +199,10 @@ func TestLoad_ReturnsErrorForInvalidDuration(t *testing.T) {
 func TestLoad_ReturnsErrorForUnreadableFile(t *testing.T) {
 	t.Parallel()
 
+	if os.Getuid() == 0 {
+		t.Skip("chmod 0o000 has no effect when running as root")
+	}
+
 	dir := t.TempDir()
 	path := filepath.Join(dir, "config.yaml")
 	if err := os.WriteFile(path, []byte("listen: ':7070'"), 0o000); err != nil {

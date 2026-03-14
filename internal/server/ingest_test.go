@@ -60,7 +60,7 @@ func spanID(i int) string {
 func TestSpanBuffer_AddAppearsInStoreAfterFlush(t *testing.T) {
 	t.Parallel()
 	td := newTestDB(t)
-	buf := NewSpanBuffer(td.store, 100, 50*time.Millisecond)
+	buf := NewSpanBuffer(td.store, 100, 64, 50*time.Millisecond)
 	defer buf.Shutdown()
 
 	buf.Add([]store.Span{
@@ -90,7 +90,7 @@ func TestSpanBuffer_FlushTriggersAtBatchSize(t *testing.T) {
 	t.Parallel()
 	td := newTestDB(t)
 	// Large flush interval so only batch size triggers flush.
-	buf := NewSpanBuffer(td.store, 5, 10*time.Second)
+	buf := NewSpanBuffer(td.store, 5, 64, 10*time.Second)
 	defer buf.Shutdown()
 
 	// Add 5 spans (one per Add call, accumulates to batchSize).
@@ -123,7 +123,7 @@ func TestSpanBuffer_ShutdownDrainsRemaining(t *testing.T) {
 	t.Parallel()
 	td := newTestDB(t)
 	// Large flush interval and batch size so nothing flushes automatically.
-	buf := NewSpanBuffer(td.store, 1000, 10*time.Second)
+	buf := NewSpanBuffer(td.store, 1000, 64, 10*time.Second)
 
 	for i := range 3 {
 		buf.Add([]store.Span{
@@ -157,7 +157,7 @@ func TestSpanBuffer_AddDoesNotPanicWhenFull(t *testing.T) {
 	t.Parallel()
 	td := newTestDB(t)
 	// Small channel capacity (batchSize=2).
-	buf := NewSpanBuffer(td.store, 2, 10*time.Second)
+	buf := NewSpanBuffer(td.store, 2, 4, 10*time.Second)
 	defer buf.Shutdown()
 
 	// Flood with spans. Some will be dropped, but no panic should occur.
