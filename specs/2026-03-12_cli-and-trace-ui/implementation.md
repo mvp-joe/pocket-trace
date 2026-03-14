@@ -163,18 +163,18 @@ Build all React pages and components.
 
 Embed the React app into the Go binary and run end-to-end.
 
-- [ ] Create `cmd/pocket-trace/embed.go` with `//go:embed all:ui/dist` directive (in cmd/, not root, to avoid import cycles)
-- [ ] Create `cmd/pocket-trace/embed_dev.go` with build tag for development (empty FS)
-- [ ] Update `server.New()` to accept `fs.FS` parameter for embedded UI assets
-- [ ] Add static file serving to Fiber routes (serve from embedded FS, SPA fallback to index.html)
-- [ ] Create `Makefile` or build script: `cd ui && npm run build && cd .. && go build -ldflags "-X main.version=..." ./cmd/pocket-trace`
-- [ ] Add `version` variable in `cmd/pocket-trace/main.go` set via `-ldflags` at build time
-- [ ] Update `examples/main.go` to work with new exporter
-- [ ] Run end-to-end test: build binary, start daemon, run example app, verify traces visible via API
-- [ ] Test static UI serving: fetch /, /services, /assets/*.js
-- [ ] Test SPA fallback: fetch /traces/some-id returns index.html
-- [ ] Verify purge command works against running daemon (via POST /api/purge)
-- [ ] Verify install/uninstall commands produce correct systemd unit file
+- [x] Create `cmd/pocket-trace/embed.go` with `//go:embed all:ui/dist` directive (in cmd/, not root, to avoid import cycles)
+- [x] Create `cmd/pocket-trace/embed_dev.go` with build tag for development (empty FS)
+- [x] Update `server.New()` to accept `fs.FS` parameter for embedded UI assets
+- [x] Add static file serving to Fiber routes (serve from embedded FS, SPA fallback to index.html)
+- [x] Create `Makefile` or build script: `cd ui && npm run build && cd .. && go build -ldflags "-X main.version=..." ./cmd/pocket-trace`
+- [x] Add `version` variable in `cmd/pocket-trace/main.go` set via `-ldflags` at build time
+- [x] Update `examples/main.go` to work with new exporter
+- [x] Run end-to-end test: build binary, start daemon, run example app, verify traces visible via API
+- [x] Test static UI serving: fetch /, /services, /assets/*.js
+- [x] Test SPA fallback: fetch /traces/some-id returns index.html
+- [x] Verify purge command works against running daemon (via POST /api/purge)
+- [x] Verify install/uninstall commands produce correct systemd unit file
 
 ## Notes
 

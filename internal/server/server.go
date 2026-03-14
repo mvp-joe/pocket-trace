@@ -5,6 +5,8 @@ import (
 	"errors"
 	"io/fs"
 	"log/slog"
+	"mime"
+	"path/filepath"
 	"time"
 
 	"pocket-trace/internal/store"
@@ -34,8 +36,10 @@ func New(s *store.Store, buf *SpanBuffer, h *Handlers, uiFS fs.FS, retention, pu
 
 	RegisterRoutes(app, h)
 
-	// TODO: Serve embedded UI assets from uiFS when available.
-	_ = uiFS
+	// Serve embedded UI assets with SPA fallback.
+	if uiFS != nil && hasIndexHTML(uiFS) {
+		app.Get("/*", spaFiberHandler(uiFS))
+	}
 
 	srv := &Server{
 		app:    app,
@@ -106,6 +110,52 @@ func (s *Server) Shutdown(ctx context.Context) error {
 // App returns the underlying Fiber app, useful for testing.
 func (s *Server) App() *fiber.App {
 	return s.app
+}
+
+// spaFiberHandler returns a Fiber handler that serves static files from fsys,
+// falling back to index.html for paths that don't match a file (SPA routing).
+func spaFiberHandler(fsys fs.FS) fiber.Handler {
+	// Pre-read index.html for SPA fallback.
+	indexHTML, _ := fs.ReadFile(fsys, "index.html")
+
+	return func(c fiber.Ctx) error {
+		path := c.Path()
+		if len(path) > 0 && path[0] == '/' {
+			path = path[1:]
+		}
+		if path == "" {
+			path = "index.html"
+		}
+
+		data, err := fs.ReadFile(fsys, path)
+		if err == nil {
+			c.Set("Content-Type", contentType(path))
+			return c.Status(fiber.StatusOK).Send(data)
+		}
+
+		// SPA fallback: serve index.html for client-side routing.
+		c.Set("Content-Type", "text/html; charset=utf-8")
+		return c.Status(fiber.StatusOK).Send(indexHTML)
+	}
+}
+
+// contentType returns the MIME type for the given file path.
+func contentType(path string) string {
+	ct := mime.TypeByExtension(filepath.Ext(path))
+	if ct == "" {
+		return "application/octet-stream"
+	}
+	return ct
+}
+
+// hasIndexHTML reports whether the given FS contains an index.html file.
+func hasIndexHTML(fsys fs.FS) bool {
+	f, err := fsys.Open("index.html")
+	if err != nil {
+		return false
+	}
+	f.Close()
+	return true
 }
 
 // jsonErrorHandler returns errors as JSON using the APIResponse envelope.

@@ -176,3 +176,123 @@
 - **Critical findings:** 0 resolved, 0 unresolved
 - **Improvements:** 0 addressed, 1 deferred
 - **Proceeding to:** Phase 6
+
+### Task: UI Foundation (routing, layout, sidebar, API client, hooks)
+- **Specialist:** typescript-ui-engineer
+- **Status:** completed
+- **Files:** api/types.ts, api/client.ts, api/hooks.ts, components/layout/RootLayout.tsx, components/layout/Sidebar.tsx, App.tsx, 4 placeholder pages
+- **Summary:** React Router with all routes, TanStack Query provider, typed API client with envelope unwrapping, 5 data hooks
+
+### Task: Shared Components (7 components)
+- **Specialist:** typescript-ui-engineer
+- **Status:** completed
+- **Files:** PageHeader.tsx, ServiceBadge.tsx, StatusBadge.tsx, DurationBar.tsx, ErrorBadge.tsx, TimeDisplay.tsx, CopyButton.tsx
+- **Summary:** All shared display components with Tailwind styling
+
+### Task: Services + Search pages
+- **Specialist:** typescript-ui-engineer
+- **Status:** completed
+- **Files:** pages/ServicesPage.tsx, pages/SearchPage.tsx
+- **Summary:** Service cards with click-through, search with filters/URL sync/trace list
+
+### Task: Trace page with waterfall
+- **Specialist:** typescript-ui-engineer
+- **Status:** completed
+- **Files:** pages/TracePage.tsx, pages/trace/TimeRuler.tsx, SpanRow.tsx, SpanTree.tsx, SpanDetail.tsx, CollapseToggle.tsx
+- **Summary:** Waterfall visualization with recursive span tree, detail panel, collapse/expand
+
+### Task: Dependencies page
+- **Specialist:** typescript-ui-engineer
+- **Status:** completed
+- **Files:** pages/DependenciesPage.tsx
+- **Summary:** Table view with lookback select, service badges, call counts
+
+### Phase 6 Summary
+- **Tasks:** 23 of 23 completed, 0 skipped
+- **Skipped task count:** 0
+- **Critical findings:** 0 resolved, 0 unresolved
+- **Improvements:** 0 addressed, 0 deferred
+- **Proceeding to:** Phase 7
+
+### Task: Embedding, SPA serving, build script, e2e verification
+- **Specialist:** go-engineer + orchestrator
+- **Status:** completed
+- **Files:** internal/server/server.go, Makefile, cmd/pocket-trace/embed.go, cmd/pocket-trace/embed_dev.go, cmd/pocket-trace/main.go
+- **Summary:** Embed UI via //go:embed, native Fiber SPA handler with fs.ReadFile, Makefile build/clean/dev targets, all e2e tests verified
+
+### Spec Interpretation: SPA fallback approach
+> **Context:** Spec said "use the static middleware" for Fiber v3, but `static.New()` with `NotFoundHandler` returned 404 for SPA routes. The `adaptor.HTTPHandler` approach also produced 404 status codes despite correct content (Fiber overrides status for unmatched routes).
+> **Interpretation:** Replaced with native Fiber handler using `app.Get("/*", ...)` and `fs.ReadFile` to serve static files directly, with explicit `c.Status(fiber.StatusOK)` for SPA fallback. This gives full control over both content and status code.
+> **Proceeded with:** Native Fiber handler with pre-read index.html and MIME type detection via `mime.TypeByExtension`.
+
+### Phase 7 E2E Verification Results
+- **GET /** → 200, index.html content
+- **GET /services** → 200, index.html (SPA fallback)
+- **GET /traces/some-id** → 200, index.html (SPA fallback)
+- **GET /assets/index-*.js** → 200, text/javascript
+- **GET /assets/index-*.css** → 200, text/css
+- **GET /api/status** → 200, JSON with version/uptime/db stats
+- **GET /api/services** → 200, JSON with example-app service
+- **GET /api/traces** → 200, JSON with 5 traces, 20 total spans
+- **purge --older-than 0s** → Purged 20 spans
+- **Daemon tests** → 9 tests pass, unit file template verified
+
+### Phase 7 Review
+- **Reviewer findings:** 5 total (0 critical, 0 improvements needing code changes, 5 noted)
+- **Finding 1 (Noted - spec update):** NewSpanBuffer has extra channelCap param vs interface.md. Known from Phase 3 review.
+- **Finding 2 (Noted):** server.New() extra params beyond fs.FS. Expected — other params from earlier phases.
+- **Finding 3 (Noted):** fs.Sub error discarded in main.go. Justified by code comment — compile-time constant path.
+- **Finding 4 (Noted - already documented):** SPA handler uses native Fiber instead of static middleware. Documented as Spec Interpretation above.
+- **Finding 5 (Noted):** overview.md status not updated. Fixed as part of finalization.
+- **No code changes needed.**
+
+### Phase 7 Summary
+- **Tasks:** 12 of 12 completed, 0 skipped
+- **Skipped task count:** 0
+- **Critical findings:** 0 resolved, 0 unresolved
+- **Improvements:** 0 addressed, 0 deferred
+
+---
+
+## Final Summary
+
+**Completed:** 2026-03-14 00:10
+**Result:** Complete
+
+### Tasks
+- **96 of 96** tasks completed
+- **Skipped:** None
+- **Failed:** None
+
+### Review Findings
+- **16** findings across all phases
+- **6** resolved (code fixes applied)
+- **5** deferred improvements (1 from Phase 5)
+- **0** unresolved
+
+### Unresolved Items
+None
+
+### Deferred Improvements
+1. Install test can't verify full flow due to hardcoded unitPath (Phase 5)
+
+### Files Created/Modified
+**Go backend:**
+- cmd/pocket-trace/main.go, install.go, uninstall.go, status.go, purge.go, embed.go, embed_dev.go
+- internal/config/config.go, config_test.go
+- internal/store/store.go, store_test.go
+- internal/server/server.go, handlers.go, routes.go, ingest.go, handlers_test.go, ingest_test.go
+- internal/daemon/daemon.go, systemd.go, daemon_test.go
+- exporter.go, exporter_test.go
+- examples/main.go
+- go.mod, go.sum
+- Makefile, .gitignore
+
+**React UI:**
+- ui/src/api/types.ts, client.ts, hooks.ts
+- ui/src/components/layout/RootLayout.tsx, Sidebar.tsx
+- ui/src/components/PageHeader.tsx, ServiceBadge.tsx, StatusBadge.tsx, DurationBar.tsx, ErrorBadge.tsx, TimeDisplay.tsx, CopyButton.tsx
+- ui/src/pages/ServicesPage.tsx, SearchPage.tsx, TracePage.tsx, DependenciesPage.tsx
+- ui/src/pages/trace/TimeRuler.tsx, SpanRow.tsx, SpanTree.tsx, SpanDetail.tsx, CollapseToggle.tsx
+- ui/src/App.tsx
+- ui/package.json, tsconfig.json, vite.config.ts, tailwind.config.ts, etc.

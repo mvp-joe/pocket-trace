@@ -26,7 +26,7 @@ pocket-trace pivots from a library-only OTLP exporter into a complete, self-cont
 
 ## Current Status
 
-Planning
+Complete (implemented autonomously via /spec:implement-all, 2026-03-14)
 
 ## Key Files
 

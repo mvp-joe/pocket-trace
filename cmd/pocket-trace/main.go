@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"io/fs"
 	"log/slog"
 	"os"
 	"os/signal"
@@ -62,7 +63,14 @@ func runDaemon(_ *cobra.Command, _ []string) error {
 		Version:   version,
 	}
 
-	srv := server.New(s, buf, h, nil, cfg.Retention, cfg.PurgeInterval)
+	// Strip the "ui/dist" prefix from the embedded FS so the server sees
+	// files at the root (e.g., "index.html" instead of "ui/dist/index.html").
+	// fs.Sub returns an error only if the path is invalid, which it won't be
+	// for a compile-time constant. For the dev build, uiFS is empty and Sub
+	// will return a valid but empty FS.
+	uiAssets, _ := fs.Sub(uiFS, "ui/dist")
+
+	srv := server.New(s, buf, h, uiAssets, cfg.Retention, cfg.PurgeInterval)
 
 	// Graceful shutdown on SIGINT/SIGTERM.
 	sigCh := make(chan os.Signal, 1)
