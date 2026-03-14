@@ -62,7 +62,7 @@ func runDaemon(_ *cobra.Command, _ []string) error {
 		Version:   version,
 	}
 
-	srv := server.New(s, buf, h, nil)
+	srv := server.New(s, buf, h, nil, cfg.Retention, cfg.PurgeInterval)
 
 	// Graceful shutdown on SIGINT/SIGTERM.
 	sigCh := make(chan os.Signal, 1)

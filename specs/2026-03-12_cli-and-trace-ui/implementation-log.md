@@ -97,3 +97,36 @@
 - **Critical findings:** 0 resolved, 0 unresolved
 - **Improvements:** 2 addressed, 0 deferred
 - **Proceeding to:** Phase 3
+
+### Task: Config module (Config struct, Load, Default, tests)
+- **Specialist:** go-engineer
+- **Status:** completed
+- **Files:** internal/config/config.go, config_test.go
+- **Summary:** Config struct with YAML tags, custom UnmarshalYAML for durations, Load with defaults merge
+
+### Task: Store module (types, New, Close, InsertSpans, tests)
+- **Specialist:** go-engineer
+- **Status:** completed
+- **Files:** internal/store/store.go, store_test.go
+- **Summary:** All domain types, SQLite with PRAGMAs, schema creation, transactional InsertSpans
+
+### Task: SpanBuffer + Server (ingest, routes, handlers, CLI wiring)
+- **Specialist:** go-engineer
+- **Status:** completed
+- **Files:** internal/server/ingest.go, server.go, routes.go, handlers.go, ingest_test.go, handlers_test.go, cmd/pocket-trace/main.go
+- **Summary:** SpanBuffer with background flush, Fiber server, POST /api/ingest handler, CLI wiring with graceful shutdown
+
+### Phase 3 Review
+- **Reviewer findings:** 5 total (0 critical, 4 improvements, 1 noted)
+- **Finding 1 (Improvement, fixed):** SpanBuffer batchSize/channelCap conflation. Split into separate parameters.
+- **Finding 2 (Improvement, fixed):** SpanBuffer.Shutdown no idempotency guard. Added sync.Once.
+- **Finding 3 (Improvement, fixed):** Test cleanup ordering. Fixed LIFO cleanup registration.
+- **Finding 4 (Noted):** Root skip guard for chmod test. Added t.Skip.
+- **Finding 5 (Improvement, fixed):** Context propagation in SpanBuffer.flush.
+
+### Phase 3 Summary
+- **Tasks:** 17 of 17 completed, 0 skipped
+- **Skipped task count:** 0
+- **Critical findings:** 0 resolved, 0 unresolved
+- **Improvements:** 4 addressed, 0 deferred
+- **Proceeding to:** Phase 4

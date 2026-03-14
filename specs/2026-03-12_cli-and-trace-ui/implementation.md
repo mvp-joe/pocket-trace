@@ -73,28 +73,28 @@ Build the Fiber server, SQLite store, ingest endpoint with RAM buffer, and confi
 
 Implement all query endpoints and the store methods that back them.
 
-- [ ] Implement `Store.ListServices(ctx) ([]ServiceSummary, error)`
-- [ ] Implement `GET /api/services` handler
-- [ ] Write services query tests
-- [ ] Implement `Store.SearchTraces(ctx, TraceQuery) ([]TraceSummary, error)` -- dynamic WHERE clause building
-- [ ] Implement `GET /api/traces` handler with query param parsing
-- [ ] Write search traces tests (all filter combinations, limit, ordering)
-- [ ] Implement `Store.GetTrace(ctx, traceID) (*TraceDetail, error)` -- query flat spans, build tree in-memory (index by spanID, walk to build children, roots = `parent_span_id IS NULL` + orphans whose parent is missing, sort children and roots by startTime), compute aggregate stats from all spans
-- [ ] Implement `GET /api/traces/:traceID` handler -- returns `TraceDetail` with `Roots []SpanNode`
-- [ ] Write get trace tests (verify tree structure, children ordering, root detection, orphan promotion, aggregate stats)
-- [ ] Implement `Store.GetSpan(ctx, traceID, spanID) (*Span, error)`
-- [ ] Implement `GET /api/traces/:traceID/spans/:spanID` handler
-- [ ] Write get span tests
-- [ ] Implement `Store.GetDependencies(ctx, since time.Time) ([]Dependency, error)` -- self-join on spans by trace_id where service_name differs
-- [ ] Implement `GET /api/dependencies` handler with lookback parsing
-- [ ] Write dependency tests
-- [ ] Implement `Store.Stats(ctx) (*DBStats, error)`
-- [ ] Implement `GET /api/status` handler
-- [ ] Write status tests
-- [ ] Implement `Store.PurgeOlderThan(ctx, before time.Time) (int64, error)`
-- [ ] Implement `POST /api/purge` handler with `olderThan` query param parsing
-- [ ] Write purge tests
-- [ ] Add retention purger ticker to server startup (uses `Config.PurgeInterval`, calls PurgeOlderThan)
+- [x] Implement `Store.ListServices(ctx) ([]ServiceSummary, error)`
+- [x] Implement `GET /api/services` handler
+- [x] Write services query tests
+- [x] Implement `Store.SearchTraces(ctx, TraceQuery) ([]TraceSummary, error)` -- dynamic WHERE clause building
+- [x] Implement `GET /api/traces` handler with query param parsing
+- [x] Write search traces tests (all filter combinations, limit, ordering)
+- [x] Implement `Store.GetTrace(ctx, traceID) (*TraceDetail, error)` -- query flat spans, build tree in-memory (index by spanID, walk to build children, roots = `parent_span_id IS NULL` + orphans whose parent is missing, sort children and roots by startTime), compute aggregate stats from all spans
+- [x] Implement `GET /api/traces/:traceID` handler -- returns `TraceDetail` with `Roots []SpanNode`
+- [x] Write get trace tests (verify tree structure, children ordering, root detection, orphan promotion, aggregate stats)
+- [x] Implement `Store.GetSpan(ctx, traceID, spanID) (*Span, error)`
+- [x] Implement `GET /api/traces/:traceID/spans/:spanID` handler
+- [x] Write get span tests
+- [x] Implement `Store.GetDependencies(ctx, since time.Time) ([]Dependency, error)` -- self-join on spans by trace_id where service_name differs
+- [x] Implement `GET /api/dependencies` handler with lookback parsing
+- [x] Write dependency tests
+- [x] Implement `Store.Stats(ctx) (*DBStats, error)`
+- [x] Implement `GET /api/status` handler
+- [x] Write status tests
+- [x] Implement `Store.PurgeOlderThan(ctx, before time.Time) (int64, error)`
+- [x] Implement `POST /api/purge` handler with `olderThan` query param parsing
+- [x] Write purge tests
+- [x] Add retention purger ticker to server startup (uses `Config.PurgeInterval`, calls PurgeOlderThan)
 
 ## Phase 5: Daemon Management
 
