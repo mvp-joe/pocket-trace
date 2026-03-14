@@ -8,12 +8,11 @@ import (
 	"time"
 
 	trace "pocket-trace"
-	"pocket-trace/otlp"
 )
 
 func main() {
 	trace.SetServiceName("example-app")
-	trace.SetExporter(otlp.NewExporter("http://localhost:7281"))
+	// TODO: replace with NewHTTPExporter once exporter.go is implemented
 	defer trace.Shutdown(context.Background())
 
 	ctx := context.Background()
@@ -24,7 +23,7 @@ func main() {
 		time.Sleep(100 * time.Millisecond)
 	}
 
-	fmt.Println("\nDone. Check traces at http://localhost:7280/ui/search (index: otel-traces-v0_7)")
+	fmt.Println("\nDone. Check traces at http://localhost:7070")
 }
 
 func handleRequest(ctx context.Context, path string) {

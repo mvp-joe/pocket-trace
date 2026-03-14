@@ -4,21 +4,21 @@
 
 Set up directory structure, Cobra CLI skeleton, Vite/React project, and dependency management.
 
-- [ ] Create directory structure: `cmd/pocket-trace/`, `internal/daemon/`, `internal/server/`, `internal/store/`, `internal/config/`, `ui/`
-- [ ] Update `go.mod`: remove OTLP/protobuf/x-net deps, add cobra, fiber/v3, modernc.org/sqlite, gopkg.in/yaml.v3
-- [ ] Create `cmd/pocket-trace/main.go` with Cobra root command (stub: prints "daemon starting")
-- [ ] Create `cmd/pocket-trace/install.go` with stub install command
-- [ ] Create `cmd/pocket-trace/uninstall.go` with stub uninstall command
-- [ ] Create `cmd/pocket-trace/status.go` with stub status command
-- [ ] Create `cmd/pocket-trace/purge.go` with stub purge command (with `--older-than` flag)
-- [ ] Initialize Vite + React + TypeScript project in `ui/` (`npm create vite@latest . -- --template react-ts`)
-- [ ] Install UI deps: react-router-dom, @tanstack/react-query, tailwindcss v4, lucide-react, date-fns
-- [ ] Set up shadcn/ui in the Vite project
-- [ ] Configure Tailwind CSS v4
-- [ ] Verify `go build ./cmd/pocket-trace` compiles
-- [ ] Verify `cd ui && npm run build` produces `ui/dist/`
-- [ ] Update `.gitignore` with `ui/dist/` and `ui/node_modules/`
-- [ ] Delete `otlp/` directory and `scripts/` directory (if they exist)
+- [x] Create directory structure: `cmd/pocket-trace/`, `internal/daemon/`, `internal/server/`, `internal/store/`, `internal/config/`, `ui/`
+- [x] Update `go.mod`: remove OTLP/protobuf/x-net deps, add cobra, fiber/v3, modernc.org/sqlite, gopkg.in/yaml.v3
+- [x] Create `cmd/pocket-trace/main.go` with Cobra root command (stub: prints "daemon starting")
+- [x] Create `cmd/pocket-trace/install.go` with stub install command
+- [x] Create `cmd/pocket-trace/uninstall.go` with stub uninstall command
+- [x] Create `cmd/pocket-trace/status.go` with stub status command
+- [x] Create `cmd/pocket-trace/purge.go` with stub purge command (with `--older-than` flag)
+- [x] Initialize Vite + React + TypeScript project in `ui/` (`npm create vite@latest . -- --template react-ts`)
+- [x] Install UI deps: react-router-dom, @tanstack/react-query, tailwindcss v4, lucide-react, date-fns
+- [x] Set up shadcn/ui in the Vite project
+- [x] Configure Tailwind CSS v4
+- [x] Verify `go build ./cmd/pocket-trace` compiles
+- [x] Verify `cd ui && npm run build` produces `ui/dist/`
+- [x] Update `.gitignore` with `ui/dist/` and `ui/node_modules/`
+- [x] Delete `otlp/` directory and `scripts/` directory (if they exist)
 
 ## Phase 2: New JSON Exporter
 
