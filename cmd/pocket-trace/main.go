@@ -22,10 +22,11 @@ var (
 )
 
 var rootCmd = &cobra.Command{
-	Use:   "pocket-trace",
-	Short: "Self-contained tracing daemon",
-	Long:  "pocket-trace daemon — accepts trace data via JSON HTTP POST, stores spans in SQLite, and serves a web UI.",
-	RunE:  runDaemon,
+	Use:          "pocket-trace",
+	Short:        "Self-contained tracing daemon",
+	Long:         "pocket-trace daemon — accepts trace data via JSON HTTP POST, stores spans in SQLite, and serves a web UI.",
+	SilenceUsage: true,
+	RunE:         runDaemon,
 }
 
 func init() {
