@@ -116,48 +116,48 @@ Implement DaemonManager interface, systemd implementation, and CLI commands.
 Build all React pages and components.
 
 ### Foundation
-- [-] Set up react-router-dom with route definitions (/ redirects to /services, /services, /search, /traces/:traceID, /dependencies)
-- [-] Create `RootLayout` component with `Sidebar` and `Outlet`
-- [-] Create `Sidebar` with `Navigation`, `NavItem` components, and `DaemonStatus`
-- [-] Set up TanStack Query client provider
-- [-] Create API client module (`ui/src/api/client.ts`) with typed fetch functions for all endpoints
-- [-] Create custom hooks: `useServices`, `useTraces`, `useTrace`, `useDependencies`, `useStatus`
+- [x] Set up react-router-dom with route definitions (/ redirects to /services, /services, /search, /traces/:traceID, /dependencies)
+- [x] Create `RootLayout` component with `Sidebar` and `Outlet`
+- [x] Create `Sidebar` with `Navigation`, `NavItem` components, and `DaemonStatus`
+- [x] Set up TanStack Query client provider
+- [x] Create API client module (`ui/src/api/client.ts`) with typed fetch functions for all endpoints
+- [x] Create custom hooks: `useServices`, `useTraces`, `useTrace`, `useDependencies`, `useStatus`
 
 ### Shared Components
-- [-] Create `PageHeader` component
-- [-] Create `ServiceBadge` component (deterministic color from service name hash)
-- [-] Create `StatusBadge` component (OK/ERROR/UNSET)
-- [-] Create `DurationBar` component (shared, used in search results and trace waterfall)
-- [-] Create `ErrorBadge` component
-- [-] Create `TimeDisplay` component (formats unix nanos)
-- [-] Create `CopyButton` component
+- [x] Create `PageHeader` component
+- [x] Create `ServiceBadge` component (deterministic color from service name hash)
+- [x] Create `StatusBadge` component (OK/ERROR/UNSET)
+- [x] Create `DurationBar` component (shared, used in search results and trace waterfall)
+- [x] Create `ErrorBadge` component
+- [x] Create `TimeDisplay` component (formats unix nanos)
+- [x] Create `CopyButton` component
 
 ### Services Page
-- [-] Create `ServicesPage` with `ServiceList` and `ServiceCard`
-- [-] Wire to `useServices` hook
-- [-] Click-through to search page with service filter
+- [x] Create `ServicesPage` with `ServiceList` and `ServiceCard`
+- [x] Wire to `useServices` hook
+- [x] Click-through to search page with service filter
 
 ### Search Page
-- [-] Create `SearchPage` with `SearchFilters` and `TraceList`
-- [-] Create filter components: `ServiceSelect`, `SpanNameInput`, `DurationRange`, `TimeRange`
-- [-] Create `TraceRow` component with duration bar, badges, timestamp
-- [-] Wire to `useTraces` hook with filter params
-- [-] Sync filter state to URL query params
+- [x] Create `SearchPage` with `SearchFilters` and `TraceList`
+- [x] Create filter components: `ServiceSelect`, `SpanNameInput`, `DurationRange`, `TimeRange`
+- [x] Create `TraceRow` component with duration bar, badges, timestamp
+- [x] Wire to `useTraces` hook with filter params
+- [x] Sync filter state to URL query params
 
 ### Trace Page
-- [-] Create `TracePage` with `TraceTimeline` and `SpanDetail` panel
-- [-] Create `SpanTree` with recursive `SpanRow` components (tree is pre-built by API, iterate `roots[]` and render each root's `children` recursively)
-- [-] Create `TimeRuler` component for timeline header
-- [-] Implement `DurationBar` positioning logic for trace waterfall (offset from trace start, width from span duration)
-- [-] Create `CollapseToggle` for expand/collapse subtrees
-- [-] Create `SpanDetail` panel with attributes table and events list
-- [-] Wire to `useTrace` hook
-- [-] Implement span row click to show/hide detail panel
+- [x] Create `TracePage` with `TraceTimeline` and `SpanDetail` panel
+- [x] Create `SpanTree` with recursive `SpanRow` components (tree is pre-built by API, iterate `roots[]` and render each root's `children` recursively)
+- [x] Create `TimeRuler` component for timeline header
+- [x] Implement `DurationBar` positioning logic for trace waterfall (offset from trace start, width from span duration)
+- [x] Create `CollapseToggle` for expand/collapse subtrees
+- [x] Create `SpanDetail` panel with attributes table and events list
+- [x] Wire to `useTrace` hook
+- [x] Implement span row click to show/hide detail panel
 
 ### Dependencies Page
-- [-] Create `DependenciesPage` with `LookbackSelect`
-- [-] Create `DependencyGraph` component (list/table view for MVP: parent -> child with call count)
-- [-] Wire to `useDependencies` hook
+- [x] Create `DependenciesPage` with `LookbackSelect`
+- [x] Create `DependencyGraph` component (list/table view for MVP: parent -> child with call count)
+- [x] Wire to `useDependencies` hook
 
 ## Phase 7: Embedding and Integration
 
