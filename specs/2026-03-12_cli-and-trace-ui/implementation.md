@@ -39,35 +39,35 @@ Replace the OTLP exporter with a JSON HTTP POST exporter. Same batching pattern,
 Build the Fiber server, SQLite store, ingest endpoint with RAM buffer, and config loading.
 
 ### Config
-- [ ] Create `internal/config/config.go` with `Config` struct and default values
-- [ ] Implement `Load(path string) (*Config, error)` -- read YAML, merge with defaults
-- [ ] Implement `Default() *Config`
-- [ ] Write config unit tests
+- [x] Create `internal/config/config.go` with `Config` struct and default values
+- [x] Implement `Load(path string) (*Config, error)` -- read YAML, merge with defaults
+- [x] Implement `Default() *Config`
+- [x] Write config unit tests
 
 ### Store
-- [ ] Create `internal/store/store.go` with `Store` struct and domain types (`Span`, `ServiceSummary`, `TraceSummary`, `Dependency`, `DBStats`, `TraceQuery`)
-- [ ] Implement `New(dbPath string) (*Store, error)` -- open DB, set PRAGMAs, create schema
-- [ ] Implement `Close() error`
-- [ ] Implement `InsertSpans(ctx, []Span) error` -- transaction with prepared INSERT OR REPLACE
-- [ ] Write store insert tests (single, batch, idempotent upsert)
+- [x] Create `internal/store/store.go` with `Store` struct and domain types (`Span`, `ServiceSummary`, `TraceSummary`, `Dependency`, `DBStats`, `TraceQuery`)
+- [x] Implement `New(dbPath string) (*Store, error)` -- open DB, set PRAGMAs, create schema
+- [x] Implement `Close() error`
+- [x] Implement `InsertSpans(ctx, []Span) error` -- transaction with prepared INSERT OR REPLACE
+- [x] Write store insert tests (single, batch, idempotent upsert)
 
 ### SpanBuffer
-- [ ] Create `internal/server/ingest.go` with `SpanBuffer` struct, `IngestRequest`/`IngestSpan`/`IngestEvent` types
-- [ ] Implement `NewSpanBuffer(store, batchSize, flushInterval) *SpanBuffer`
-- [ ] Implement `Add([]store.Span)` -- push to buffered channel
-- [ ] Implement background flush goroutine (same pattern as exporter)
-- [ ] Implement `Shutdown()` -- drain and flush
-- [ ] Write buffer unit tests
+- [x] Create `internal/server/ingest.go` with `SpanBuffer` struct, `IngestRequest`/`IngestSpan`/`IngestEvent` types
+- [x] Implement `NewSpanBuffer(store, batchSize, flushInterval) *SpanBuffer`
+- [x] Implement `Add([]store.Span)` -- push to buffered channel
+- [x] Implement background flush goroutine (same pattern as exporter)
+- [x] Implement `Shutdown()` -- drain and flush
+- [x] Write buffer unit tests
 
 ### Server
-- [ ] Create `internal/server/server.go` with `Server` struct
-- [ ] Initialize Fiber app with recovery middleware and JSON error handler
-- [ ] Create `internal/server/routes.go` with `RegisterRoutes`
-- [ ] Create `internal/server/handlers.go` with `Handlers` struct
-- [ ] Implement `POST /api/ingest` handler -- parse JSON, convert to store.Span (convert empty ParentSpanID to SQL NULL for root spans), push to buffer, return 202
-- [ ] Wire root command to load config, open store, create server, start listening
-- [ ] Add SIGINT/SIGTERM handling for graceful shutdown (flush buffer, close store)
-- [ ] Write ingest integration test (POST spans, verify in DB)
+- [x] Create `internal/server/server.go` with `Server` struct
+- [x] Initialize Fiber app with recovery middleware and JSON error handler
+- [x] Create `internal/server/routes.go` with `RegisterRoutes`
+- [x] Create `internal/server/handlers.go` with `Handlers` struct
+- [x] Implement `POST /api/ingest` handler -- parse JSON, convert to store.Span (convert empty ParentSpanID to SQL NULL for root spans), push to buffer, return 202
+- [x] Wire root command to load config, open store, create server, start listening
+- [x] Add SIGINT/SIGTERM handling for graceful shutdown (flush buffer, close store)
+- [x] Write ingest integration test (POST spans, verify in DB)
 
 ## Phase 4: Query API
 
