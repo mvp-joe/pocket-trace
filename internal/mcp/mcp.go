@@ -202,6 +202,9 @@ func (t *tools) findErrorTraces(ctx context.Context, _ *mcp.CallToolRequest, inp
 	// Collect full trace details for traces with errors, tolerating individual failures.
 	var results []*store.TraceDetail
 	for _, s := range summaries {
+		if ctx.Err() != nil {
+			break
+		}
 		if s.ErrorCount <= 0 {
 			continue
 		}
