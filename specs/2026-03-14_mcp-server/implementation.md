@@ -24,9 +24,9 @@
 
 ## Phase 3: Tests
 
-- [ ] Write unit tests for each tool handler in `internal/mcp/mcp_test.go`
-- [ ] Write integration tests in `internal/mcp/integration_test.go`: MCP tool call through the full Fiber server with adaptor
-- [ ] Verify all existing tests still pass (`go test ./...`)
+- [x] Write unit tests for each tool handler in `internal/mcp/mcp_test.go`
+- [x] Write integration tests in `internal/mcp/integration_test.go`: MCP tool call through the full Fiber server with adaptor
+- [x] Verify all existing tests still pass (`go test ./...`)
 
 ## Notes
 
