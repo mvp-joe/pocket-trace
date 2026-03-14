@@ -2,7 +2,7 @@
 
 ## Phase 1: MCP Server Skeleton and Basic Tools
 
-- [ ] Add `github.com/modelcontextprotocol/go-sdk` dependency (`go get github.com/modelcontextprotocol/go-sdk@v1.4.1`)
+- [x] Add `github.com/modelcontextprotocol/go-sdk` dependency (`go get github.com/modelcontextprotocol/go-sdk@v1.4.1`)
 - [ ] Create `internal/mcp/` package with `mcp.go` file
 - [ ] Define `tools` struct holding `*store.Store`
 - [ ] Define input types: `SearchTracesInput`, `GetTraceInput`, `GetSpanInput`, `FindErrorTracesInput`, `GetDependenciesInput`
