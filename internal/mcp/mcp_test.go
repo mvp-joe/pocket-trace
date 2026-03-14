@@ -707,3 +707,27 @@ func TestGetStatus_EmptyDB(t *testing.T) {
 		t.Errorf("traceCount = %d, want 0", stats.TraceCount)
 	}
 }
+
+func TestStoreErrorPropagates(t *testing.T) {
+	t.Parallel()
+	tt := newTestTools(t)
+	ctx := context.Background()
+
+	// Close the store to force errors on subsequent queries.
+	tt.store.Close()
+
+	_, _, err := tt.listServices(ctx, nil, struct{}{})
+	if err == nil {
+		t.Error("expected error from listServices after store closed")
+	}
+
+	_, _, err = tt.searchTraces(ctx, nil, SearchTracesInput{})
+	if err == nil {
+		t.Error("expected error from searchTraces after store closed")
+	}
+
+	_, _, err = tt.getStatus(ctx, nil, struct{}{})
+	if err == nil {
+		t.Error("expected error from getStatus after store closed")
+	}
+}

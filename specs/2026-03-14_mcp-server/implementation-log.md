@@ -99,4 +99,55 @@
 - **Improvements:** 1 addressed
 - **Proceeding to:** Phase 3
 
+### Task: Write unit tests (mcp_test.go)
+- **Specialist:** go-engineer
+- **Status:** completed
+- **Files:** internal/mcp/mcp_test.go (created)
+- **Summary:** 21 unit tests covering all 7 handlers with real SQLite stores.
+
+### Task: Write integration tests (integration_test.go)
+- **Specialist:** go-engineer
+- **Status:** completed
+- **Files:** internal/mcp/integration_test.go (created)
+- **Summary:** 3 integration tests using MCP SDK client through full Fiber+adaptor stack.
+
+### Task: Verify all existing tests pass
+- **Specialist:** orchestrator
+- **Status:** completed
+- **Summary:** `go test ./...` all pass.
+
+### Phase 3 Review
+- **Reviewer findings:** 3 total
+- **Triage results:** 0 critical, 2 improvements, 1 deferred
+
+| # | Finding | Verdict | Urgency | Reasoning |
+|---|---------|---------|---------|-----------|
+| 1 | Integration invalid-input test too lenient | Valid | Improvement | Silently passes on non-error response |
+| 2 | Missing store error propagation test | Valid | Improvement | Spec requires it |
+| 3 | Missing find_error_traces partial failure test | Deferred | Low | Untestable without store interface |
+
+### Resolution: Finding #1 (Improvement)
+> **Finding:** TestMCPIntegration_ToolCallInvalidInput silently passes when no error returned
+> **Reasoning:** Replace lenient fallthrough with t.Error
+> **Action:** Replaced log-only branch with t.Error assertion
+> **Outcome:** Resolved
+
+### Resolution: Finding #2 (Improvement)
+> **Finding:** No test for store errors propagating as Go errors
+> **Reasoning:** Close store DB, call handlers, assert error returned
+> **Action:** Added TestStoreErrorPropagates covering listServices, searchTraces, getStatus
+> **Outcome:** Resolved
+
+### Deferred: Finding #3
+> **Finding:** find_error_traces partial failure (GetTrace fails after SearchTraces succeeds)
+> **Verdict:** Deferred
+> **Reasoning:** Requires store interface or mock to test. Not worth architectural change for one edge case. The implementation handles it correctly (continue on error).
+
+### Phase 3 Summary
+- **Tasks:** 3 of 3 completed, 0 skipped
+- **Skipped task count:** 0
+- **Critical findings:** 0
+- **Improvements:** 2 addressed
+- **Deferred:** 1 (untestable without interface)
+
 ---

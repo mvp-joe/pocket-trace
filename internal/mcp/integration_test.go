@@ -246,15 +246,8 @@ func TestMCPIntegration_ToolCallInvalidInput(t *testing.T) {
 		return
 	}
 
-	// If we got here, the tool returned a successful result with empty traceId,
-	// which should result in a "not found" error from the store.
-	if len(result.Content) > 0 {
-		tc, ok := result.Content[0].(*mcp.TextContent)
-		if ok && len(tc.Text) > 0 {
-			// The tool should have returned a "not found" error result since
-			// the empty traceId won't match anything.
-			t.Logf("tool returned: %s", tc.Text)
-		}
-	}
+	// If we got here, the tool returned a successful non-error result,
+	// which violates the spec: invalid input should produce an error.
+	t.Error("expected error from SDK or tool result, but got successful result")
 }
 
