@@ -22,7 +22,7 @@ Add a Model Context Protocol (MCP) server to pocket-trace, enabling AI tools (Cl
 
 ## Current Status
 
-Planning
+Complete (2026-03-14, implemented autonomously via /spec:implement-all)
 
 ## Key Files
 
