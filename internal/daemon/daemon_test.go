@@ -61,6 +61,19 @@ func withMockExec(t *testing.T, calls *[]string, responses map[string]string, fa
 }
 
 func TestSystemdManager_Uninstall_ExecSequence(t *testing.T) {
+	if os.Getuid() != 0 {
+		// The real unit file path requires root to remove.
+		// Create a temp file and override unitPath for this test.
+		tmp, err := os.CreateTemp("", "pocket-trace-unit-*")
+		if err != nil {
+			t.Fatal(err)
+		}
+		tmp.Close()
+		origPath := unitPath
+		unitPath = tmp.Name()
+		t.Cleanup(func() { unitPath = origPath })
+	}
+
 	var calls []string
 	withMockExec(t, &calls, nil, "")
 
@@ -202,7 +215,7 @@ func TestUnitTemplateContent(t *testing.T) {
 		"After=network.target",
 		"[Service]",
 		"Type=simple",
-		"ExecStart=/usr/bin/pocket-trace --config /etc/pocket-trace/config.yaml",
+		"ExecStart=/usr/bin/pocket-trace run --config /etc/pocket-trace/config.yaml",
 		"Restart=on-failure",
 		"[Install]",
 		"WantedBy=multi-user.target",

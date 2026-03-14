@@ -3,10 +3,10 @@ package daemon
 
 import "fmt"
 
-const (
-	serviceName = "pocket-trace"
-	unitPath    = "/etc/systemd/system/pocket-trace.service"
-)
+const serviceName = "pocket-trace"
+
+// unitPath is the systemd unit file location. It is a var so tests can override it.
+var unitPath = "/etc/systemd/system/pocket-trace.service"
 
 // DaemonManager handles platform-specific service lifecycle.
 type DaemonManager interface {
