@@ -34,3 +34,29 @@
 **Review**: implementation-reviewer + go-engineer triage after each phase
 
 ---
+
+### Task: Add go-sdk dependency
+- **Specialist:** orchestrator
+- **Status:** completed
+- **Files:** go.mod, go.sum
+- **Summary:** `go get github.com/modelcontextprotocol/go-sdk@v1.4.1` — added SDK + transitive deps
+
+### Task: Create package, define types, implement factory + 6 tool handlers
+- **Specialist:** go-engineer
+- **Status:** completed
+- **Files:** internal/mcp/mcp.go (created)
+- **Summary:** All 10 tasks (2-11) implemented in single file. tools struct, 5 input types, New() factory, 6 handlers with helpers.
+
+### Phase 1 Review
+- **Reviewer findings:** 0 issues
+- **Triage results:** N/A (no findings to triage)
+- **Proceeding to:** Phase 2
+
+### Phase 1 Summary
+- **Tasks:** 11 of 11 completed, 0 skipped
+- **Skipped task count:** 0
+- **Critical findings:** 0
+- **Improvements:** 0
+- **Proceeding to:** Phase 2
+
+---

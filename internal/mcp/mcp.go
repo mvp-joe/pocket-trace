@@ -92,6 +92,12 @@ func New(s *store.Store, version string) http.Handler {
 	}, t.getStatus)
 
 	mcp.AddTool(srv, &mcp.Tool{
+		Name:        "find_error_traces",
+		Description: "Find traces that contain errors and return their full span trees. This is the best starting point for debugging errors — it searches for recent traces with failures and returns complete span details so you can immediately see what went wrong without needing multiple calls. Optionally filter to a specific service.",
+		Annotations: &mcp.ToolAnnotations{ReadOnlyHint: true},
+	}, t.findErrorTraces)
+
+	mcp.AddTool(srv, &mcp.Tool{
 		Name:        "get_dependencies",
 		Description: "Get the service dependency graph showing which services call which other services, with call counts. Useful for understanding system topology and communication patterns.",
 		Annotations: &mcp.ToolAnnotations{ReadOnlyHint: true},
@@ -172,6 +178,50 @@ func (t *tools) getStatus(ctx context.Context, _ *mcp.CallToolRequest, _ struct{
 		return nil, nil, fmt.Errorf("get status: %w", err)
 	}
 	return jsonResult(stats)
+}
+
+func (t *tools) findErrorTraces(ctx context.Context, _ *mcp.CallToolRequest, input FindErrorTracesInput) (*mcp.CallToolResult, any, error) {
+	limit := input.Limit
+	if limit <= 0 {
+		limit = 5
+	}
+	if limit > 20 {
+		limit = 20
+	}
+
+	// Search with a larger limit to increase chances of finding enough error traces.
+	q := store.TraceQuery{
+		ServiceName: input.Service,
+		Limit:       100,
+	}
+	summaries, err := t.store.SearchTraces(ctx, q)
+	if err != nil {
+		return nil, nil, fmt.Errorf("find error traces: %w", err)
+	}
+
+	// Collect full trace details for traces with errors, tolerating individual failures.
+	var results []*store.TraceDetail
+	for _, s := range summaries {
+		if s.ErrorCount <= 0 {
+			continue
+		}
+		detail, err := t.store.GetTrace(ctx, s.TraceID)
+		if err != nil {
+			continue // partial failure: skip this trace
+		}
+		if detail == nil {
+			continue
+		}
+		results = append(results, detail)
+		if len(results) >= limit {
+			break
+		}
+	}
+
+	if results == nil {
+		results = []*store.TraceDetail{}
+	}
+	return jsonResult(results)
 }
 
 func (t *tools) getDependencies(ctx context.Context, _ *mcp.CallToolRequest, input GetDependenciesInput) (*mcp.CallToolResult, any, error) {

@@ -16,11 +16,11 @@
 
 ## Phase 2: Compound Tool and Server Integration
 
-- [ ] Implement `findErrorTraces` compound tool handler (search, filter errors, fetch full traces, return partial results on individual GetTrace failure)
-- [ ] Mount MCP handler in `internal/server/server.go` via `adaptor.HTTPHandler()` between `RegisterRoutes` and SPA fallback
-- [ ] Verify adaptor passes requests correctly (path, headers, SSE streaming)
-- [ ] Verify `go build` succeeds with new dependency
-- [ ] Manual smoke test: start daemon, call `/mcp` with MCP initialize + tool list
+- [x] Implement `findErrorTraces` compound tool handler (search, filter errors, fetch full traces, return partial results on individual GetTrace failure)
+- [x] Mount MCP handler in `internal/server/server.go` via `adaptor.HTTPHandler()` between `RegisterRoutes` and SPA fallback
+- [x] Verify adaptor passes requests correctly (path, headers, SSE streaming)
+- [x] Verify `go build` succeeds with new dependency
+- [x] Manual smoke test: start daemon, call `/mcp` with MCP initialize + tool list
 
 ## Phase 3: Tests
 

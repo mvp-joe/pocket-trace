@@ -9,9 +9,11 @@ import (
 	"path/filepath"
 	"time"
 
+	mcpserver "pocket-trace/internal/mcp"
 	"pocket-trace/internal/store"
 
 	"github.com/gofiber/fiber/v3"
+	"github.com/gofiber/fiber/v3/middleware/adaptor"
 	"github.com/gofiber/fiber/v3/middleware/recover"
 )
 
@@ -35,6 +37,10 @@ func New(s *store.Store, buf *SpanBuffer, h *Handlers, uiFS fs.FS, retention, pu
 	app.Use(recover.New())
 
 	RegisterRoutes(app, h)
+
+	// Mount MCP server for LLM tool integration.
+	mcpHandler := mcpserver.New(s, h.Version)
+	app.All("/mcp", adaptor.HTTPHandler(mcpHandler))
 
 	// Serve embedded UI assets with SPA fallback.
 	if uiFS != nil && hasIndexHTML(uiFS) {
