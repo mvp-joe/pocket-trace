@@ -24,15 +24,15 @@ Set up directory structure, Cobra CLI skeleton, Vite/React project, and dependen
 
 Replace the OTLP exporter with a JSON HTTP POST exporter. Same batching pattern, different wire format.
 
-- [ ] Create `exporter.go` at package root with `HTTPExporter` struct
-- [ ] Implement `NewHTTPExporter(endpoint string, opts ...ExporterOption) *HTTPExporter`
-- [ ] Implement `ExportSpan(ctx, *FinishedSpan)` -- non-blocking push to buffered channel
-- [ ] Implement `Shutdown(ctx) error` -- drain channel, flush remaining, close
-- [ ] Implement background `run()` goroutine with batch size and ticker-based flushing
-- [ ] Implement `flush()` -- convert `[]*FinishedSpan` to `IngestRequest` JSON, POST to `{endpoint}/api/ingest`. Convert `SpanStatus` int to string ("UNSET"/"OK"/"ERROR"). Hardcode `SpanKind: 1` (internal) since `FinishedSpan` has no kind field. Convert zero `ParentID` to empty string (omitted via omitempty).
-- [ ] Implement `ExporterOption` functions: `WithBatchSize`, `WithFlushInterval`
-- [ ] Write unit tests: queuing, batching, flush on timer, flush on shutdown, drop on full buffer, error handling
-- [ ] Update `examples/main.go` to use `trace.NewHTTPExporter("http://localhost:7070")` instead of `otlp.NewExporter`
+- [x] Create `exporter.go` at package root with `HTTPExporter` struct
+- [x] Implement `NewHTTPExporter(endpoint string, opts ...ExporterOption) *HTTPExporter`
+- [x] Implement `ExportSpan(ctx, *FinishedSpan)` -- non-blocking push to buffered channel
+- [x] Implement `Shutdown(ctx) error` -- drain channel, flush remaining, close
+- [x] Implement background `run()` goroutine with batch size and ticker-based flushing
+- [x] Implement `flush()` -- convert `[]*FinishedSpan` to `IngestRequest` JSON, POST to `{endpoint}/api/ingest`. Convert `SpanStatus` int to string ("UNSET"/"OK"/"ERROR"). Hardcode `SpanKind: 1` (internal) since `FinishedSpan` has no kind field. Convert zero `ParentID` to empty string (omitted via omitempty).
+- [x] Implement `ExporterOption` functions: `WithBatchSize`, `WithFlushInterval`
+- [x] Write unit tests: queuing, batching, flush on timer, flush on shutdown, drop on full buffer, error handling
+- [x] Update `examples/main.go` to use `trace.NewHTTPExporter("http://localhost:7070")` instead of `otlp.NewExporter`
 
 ## Phase 3: Daemon Core
 

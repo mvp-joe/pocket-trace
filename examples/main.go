@@ -12,7 +12,7 @@ import (
 
 func main() {
 	trace.SetServiceName("example-app")
-	// TODO: replace with NewHTTPExporter once exporter.go is implemented
+	trace.SetExporter(trace.NewHTTPExporter("http://localhost:7070"))
 	defer trace.Shutdown(context.Background())
 
 	ctx := context.Background()
