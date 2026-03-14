@@ -19,7 +19,7 @@ export function DurationBar({ duration, totalDuration, offset }: DurationBarProp
         offset == null && "bg-transparent"
       )}
       role="img"
-      aria-label={`Duration: ${(duration / 1_000_000).toFixed(1)}ms`}
+      aria-label={`Duration: ${duration.toFixed(1)}ms`}
     >
       <div
         className="absolute top-0 h-full rounded-sm bg-blue-500/70 dark:bg-blue-400/60"

@@ -40,8 +40,8 @@ Searches for traces matching filter criteria. Returns summary-level data (not fu
 - **Query Params:**
   - `service` (string, optional) -- filter by service name
   - `spanName` (string, optional) -- filter by span name (substring match)
-  - `minDuration` (int, optional) -- minimum duration in ms
-  - `maxDuration` (int, optional) -- maximum duration in ms
+  - `minDuration` (int, optional) -- minimum span duration in ms (matches traces containing at least one span meeting this threshold)
+  - `maxDuration` (int, optional) -- maximum span duration in ms (matches traces containing at least one span meeting this threshold)
   - `start` (int64, optional) -- start of time range, unix nanos
   - `end` (int64, optional) -- end of time range, unix nanos
   - `limit` (int, optional) -- max results, default 20, max 100
@@ -121,4 +121,4 @@ Purges spans older than the specified duration. Used by the `purge` CLI command 
 
 ### GET /\*
 
-All non-`/api` routes serve the embedded React application via `//go:embed ui/dist`. The Fiber static middleware serves `index.html` for any path that does not match a static asset, enabling client-side routing.
+All non-`/api` routes serve the embedded React application via `//go:embed ui/dist`. A native Fiber catch-all handler (`app.Get("/*", ...)`) serves static files via `fs.ReadFile` and falls back to `index.html` for any path that does not match a static asset, enabling client-side routing. Fiber v3's `static.New()` middleware was not used because it does not support SPA fallback correctly (returns 404 status for non-file paths).

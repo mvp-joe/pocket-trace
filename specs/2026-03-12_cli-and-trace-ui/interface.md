@@ -269,9 +269,10 @@ type SpanBuffer struct {
     flushInterval time.Duration
     stop          chan struct{}
     wg            sync.WaitGroup
+    stopOnce      sync.Once        // ensures Shutdown is safe to call multiple times
 }
 
-func NewSpanBuffer(store *store.Store, batchSize int, flushInterval time.Duration) *SpanBuffer
+func NewSpanBuffer(store *store.Store, batchSize int, channelCap int, flushInterval time.Duration) *SpanBuffer
 func (b *SpanBuffer) Add(spans []store.Span)
 func (b *SpanBuffer) Shutdown()
 ```

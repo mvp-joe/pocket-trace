@@ -14,7 +14,7 @@
 | Package                                  | Reason                       |
 |------------------------------------------|------------------------------|
 | `go.opentelemetry.io/proto/otlp`         | OTLP exporter dropped        |
-| `golang.org/x/net`                       | Was used for h2c (OTLP gRPC) |
+| `golang.org/x/net`                       | Removed as direct dep (was used for h2c/OTLP gRPC). Remains as transitive dep of Fiber v3. |
 | `google.golang.org/protobuf`             | Protobuf no longer needed    |
 
 ## New TypeScript Dependencies

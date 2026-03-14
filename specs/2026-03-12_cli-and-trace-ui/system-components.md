@@ -38,10 +38,11 @@
 
 - Creates Fiber app with JSON error handling and recovery middleware
 - Registers API route group (`/api`) and static file serving (`/*`)
-- Receives an `fs.FS` for the embedded UI assets via its constructor (passed from `cmd/pocket-trace/`)
+- Receives an `fs.FS` for the embedded UI assets, plus `retention` and `purgeInterval` durations via its constructor (passed from `cmd/pocket-trace/`)
 - Owns the `SpanBuffer` and `Store` references, passes them to handlers
+- Starts the retention purger goroutine if both retention and purgeInterval are non-zero
 - `Start(listenAddr string) error` -- starts listening (blocking)
-- `Shutdown(ctx context.Context) error` -- graceful shutdown (flushes buffer, closes store)
+- `Shutdown(ctx context.Context) error` -- graceful shutdown (stops purger, flushes buffer, closes store)
 
 ## Route Registration
 

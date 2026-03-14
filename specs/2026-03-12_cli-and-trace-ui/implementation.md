@@ -181,6 +181,6 @@ Embed the React app into the Go binary and run end-to-end.
 - The existing `trace.go` and `trace_test.go` do NOT change. The library API is stable. `FinishedSpan` has no `SpanKind` field -- the exporter hardcodes `1` (internal).
 - The `exporter.go` (new) replaces `otlp/exporter.go` (deleted). Same pattern, JSON instead of protobuf. Must convert `SpanStatus` int → string and zero `ParentID` → empty string.
 - Fiber v3 uses `fiber.Ctx` (interface) not `*fiber.Ctx` (pointer). JSON binding is `c.Bind().Body(&req)`.
-- Fiber v3 removed `app.Static()` -- use the static middleware instead.
+- Fiber v3 removed `app.Static()`. The `static.New()` middleware does not support SPA fallback correctly (returns 404 for non-file paths). Use a native Fiber catch-all handler with `fs.ReadFile` and explicit `c.Status(fiber.StatusOK)` instead.
 - modernc.org/sqlite registers as `"sqlite"` driver with `database/sql`. Import with blank identifier: `_ "modernc.org/sqlite"`.
 - The UI build output (`ui/dist/`) should be gitignored. The `//go:embed` directive references it at build time.
