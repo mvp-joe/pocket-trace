@@ -77,3 +77,23 @@
 - **Critical findings:** 0 resolved, 0 unresolved
 - **Improvements:** 0 addressed, 0 deferred
 - **Proceeding to:** Phase 2
+
+### Task: Create HTTPExporter with batching, JSON POST, tests, update example
+- **Specialist:** go-engineer
+- **Status:** completed
+- **Files:** exporter.go, exporter_test.go, examples/main.go
+- **Summary:** HTTPExporter with batched JSON POST to /api/ingest, background flush goroutine, graceful shutdown, full test coverage
+
+### Phase 2 Review
+- **Reviewer findings:** 4 total (0 critical, 2 improvements, 1 noted, 1 dismissed)
+- **Finding 1 (Improvement, fixed):** `string(rune('0'+len(req.Spans)))` in test mock server only works for single-digit span counts. Replaced with `strconv.Itoa`.
+- **Finding 2 (Improvement, fixed):** Hand-rolled `contains`/`searchString` functions in tests reimplemented `strings.Contains`. Replaced with `strings.Contains`.
+- **Finding 3 (Noted):** `ingestSpan.String()` method is unused but kept as a debugging affordance (zero cost, useful for fmt-based debugging).
+- **Finding 4 (Dismissed):** HTTP client timeout hardcoded at 10s. Reviewer acknowledged spec doesn't require configurability. Reasonable default, will add option if needed later.
+
+### Phase 2 Summary
+- **Tasks:** 9 of 9 completed, 0 skipped
+- **Skipped task count:** 0
+- **Critical findings:** 0 resolved, 0 unresolved
+- **Improvements:** 2 addressed, 0 deferred
+- **Proceeding to:** Phase 3

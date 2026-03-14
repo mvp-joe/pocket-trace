@@ -6,6 +6,8 @@ import (
 	"io"
 	"net/http"
 	"net/http/httptest"
+	"strconv"
+	"strings"
 	"sync"
 	"sync/atomic"
 	"testing"
@@ -54,7 +56,7 @@ func collectServer(t *testing.T) (*httptest.Server, func() []ingestRequest, func
 		_ = spanCount
 
 		w.WriteHeader(202)
-		w.Write([]byte(`{"accepted":` + string(rune('0'+len(req.Spans))) + `}`))
+		w.Write([]byte(`{"accepted":` + strconv.Itoa(len(req.Spans)) + `}`))
 	}))
 
 	getReqs := func() []ingestRequest {
@@ -513,19 +515,5 @@ func TestHTTPExporter_ShutdownRespectsContext(t *testing.T) {
 
 // containsField checks if a JSON string contains a given field name.
 func containsField(jsonStr, field string) bool {
-	// Simple check: look for "field": in the JSON.
-	return len(jsonStr) > 0 && (contains(jsonStr, `"`+field+`":`) || contains(jsonStr, `"`+field+`" :`))
-}
-
-func contains(s, substr string) bool {
-	return len(s) >= len(substr) && searchString(s, substr)
-}
-
-func searchString(s, substr string) bool {
-	for i := 0; i <= len(s)-len(substr); i++ {
-		if s[i:i+len(substr)] == substr {
-			return true
-		}
-	}
-	return false
+	return strings.Contains(jsonStr, `"`+field+`":`) || strings.Contains(jsonStr, `"`+field+`" :`)
 }
