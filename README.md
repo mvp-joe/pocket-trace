@@ -1,5 +1,9 @@
 # Pocket Trace
 
+<p align="center">
+  <img src="docs/assets/pocket-trace-header.png" alt="Pocket Trace — Zero-Setup Local Tracing Solution" />
+</p>
+
 Lightweight tracing for Go services and desktop apps. Gives you visibility into what's happening without the overhead of a full OpenTelemetry setup.
 
 Spans log to `slog` for local visibility and export to the built-in daemon for search and trace visualization. No OTEL collector, no external services — just your app and a single binary.
