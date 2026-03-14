@@ -16,8 +16,8 @@ func TestDefault_ReturnsValidConfig(t *testing.T) {
 	if cfg.Listen != ":7070" {
 		t.Errorf("Listen = %q, want %q", cfg.Listen, ":7070")
 	}
-	if cfg.DBPath != "/var/lib/pocket-trace/pocket-trace.db" {
-		t.Errorf("DBPath = %q, want %q", cfg.DBPath, "/var/lib/pocket-trace/pocket-trace.db")
+	if !strings.HasSuffix(cfg.DBPath, "pocket-trace.db") {
+		t.Errorf("DBPath = %q, want suffix %q", cfg.DBPath, "pocket-trace.db")
 	}
 	if cfg.Retention != 168*time.Hour {
 		t.Errorf("Retention = %v, want %v", cfg.Retention, 168*time.Hour)

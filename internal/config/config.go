@@ -5,6 +5,7 @@ import (
 	"errors"
 	"fmt"
 	"os"
+	"path/filepath"
 	"time"
 
 	"gopkg.in/yaml.v3"
@@ -23,11 +24,25 @@ type Config struct {
 	LogLevel      string        `yaml:"log_level"`
 }
 
+// defaultDBPath returns the default database path.
+// Uses /var/lib/pocket-trace/ when running as root (installed service),
+// otherwise ~/.local/share/pocket-trace/ for local development.
+func defaultDBPath() string {
+	if os.Getuid() == 0 {
+		return "/var/lib/pocket-trace/pocket-trace.db"
+	}
+	home, err := os.UserHomeDir()
+	if err != nil {
+		return "pocket-trace.db"
+	}
+	return filepath.Join(home, ".local", "share", "pocket-trace", "pocket-trace.db")
+}
+
 // Default returns a Config populated with default values.
 func Default() *Config {
 	return &Config{
 		Listen:        ":7070",
-		DBPath:        "/var/lib/pocket-trace/pocket-trace.db",
+		DBPath:        defaultDBPath(),
 		Retention:     168 * time.Hour,
 		PurgeInterval: 1 * time.Hour,
 		FlushInterval: 2 * time.Second,
